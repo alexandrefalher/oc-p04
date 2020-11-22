@@ -4,7 +4,7 @@ import yaml
 class Config:
 
     def __init__(self, path=None):
-        self.__defaultConfigFilePath: str = "config.yaml"
+        self.__defaultConfigFilePath: str = "chess/config.yaml"
         self.__set_config_file_path(path)
         self.__configs: dict = dict()
         self.__read_config()

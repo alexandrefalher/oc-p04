@@ -6,9 +6,10 @@ class Header(View):
         super()
 
     def generate(self) -> str:
+        result: str = ""
         lines: list[str] = [
             "**************************************************\n",
             "**                    Header                    **\n",
             "**************************************************\n"
         ]
-        return str.join(lines)
+        return result.join(lines)
