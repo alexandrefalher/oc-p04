@@ -1,22 +1,17 @@
+from chess.controllers.controller import Controller
 from chess.viewmodel.choice import Choice
-from chess.views.view_builder import ViewBuilder
-from chess.views.menu import Menu
-from chess.viewmodel.choice_view_model import ChoiceViewModel
+from chess.viewmodel.view_model import ViewModel
 
 
-class MainController:
+class MainController(Controller):
     def __init__(self):
-        self.__view_builder: ViewBuilder = ViewBuilder()
+        super(MainController, self).__init__()
 
     def main_page(self):
-        choices: ChoiceViewModel = ChoiceViewModel([
+        choices: ViewModel = ViewModel("Home", [
             Choice("1", "New tournament / Continue tournament", self.main_page),
             Choice("2", "List tournaments", self.main_page),
-            Choice("3", "List players", self.main_page)
+            Choice("3", "List players", self.main_page),
+            Choice("4", "Exit", lambda: None)
         ])
-
-        self.__view_builder.add_view(Menu(choices))
-        self.__view_builder.render()
-
-        choice: str = input()
-        choices[choice][1]()
+        self.navigate(choices)

@@ -3,4 +3,4 @@ class View:
         self._model: dict = model
 
     def generate(self) -> str:
-        pass
+        raise NotImplementedError()

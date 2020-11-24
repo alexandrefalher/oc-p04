@@ -6,10 +6,9 @@ class List(View):
         super()
 
     def generate(self) -> str:
-        result: str = ""
         lines: list[str] = [
             "- element 1\n",
             "- element 2\n",
             "- element 3\n"
         ]
-        return result.join(lines)
+        return "".join(lines)

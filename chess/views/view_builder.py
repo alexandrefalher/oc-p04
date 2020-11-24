@@ -24,7 +24,7 @@ class ViewBuilder:
     def render(self) -> None:
         self.__clear_console()
         print(self.__generate())
-        self.__reset()
+        self.reset()
 
     def __clear_console(self) -> None:
         if name == "posix":
@@ -42,5 +42,5 @@ class ViewBuilder:
         views_generation.append(self.__footer.generate())
         return "".join(views_generation)
 
-    def __reset(self) -> None:
+    def reset(self) -> None:
         self.__views.clear()

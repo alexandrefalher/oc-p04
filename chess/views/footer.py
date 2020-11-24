@@ -6,10 +6,7 @@ class Footer(View):
         super()
 
     def generate(self) -> str:
-        result: str = ""
         lines: list[str] = [
-            "--------------------------------------------------\n",
-            "                       Footer                     \n",
             "--------------------------------------------------\n"
         ]
-        return result.join(lines)
+        return "".join(lines)
