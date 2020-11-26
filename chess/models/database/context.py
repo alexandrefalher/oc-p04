@@ -17,7 +17,7 @@ class Context:
             self.__db = TinyDB(storage=MemoryStorage)
 
     def __init_tables(self):
-        self.player: Table = self.__db.table("players")
+        self.players: Table = self.__db.table("players")
         self.genders: Table = self.__db.table("genders")
         self.matchs: Table = self.__db.table("matchs")
         self.rounds: Table = self.__db.table("rounds")

@@ -1,6 +1,5 @@
 from typing import List
 
-from tinydb.queries import Query
 from chess.models.database.context import Context
 from chess.models.entities.entity import Entity
 
@@ -8,7 +7,6 @@ from chess.models.entities.entity import Entity
 class EntityManager:
     def __init__(self, context: Context):
         self._context: Context = context
-        self._query: Query = Query()
 
     def get(self, id: int) -> Entity:
         raise NotImplementedError()
@@ -19,8 +17,8 @@ class EntityManager:
     def create(self, entity: Entity) -> int:
         raise NotImplementedError()
 
-    def update(self, id: int, entity: Entity) -> List[int]:
+    def update(self, id: int, entity: Entity) -> int:
         raise NotImplementedError()
 
-    def delete(self, id: int) -> List[int]:
+    def delete(self, id: int) -> int:
         raise NotImplementedError()

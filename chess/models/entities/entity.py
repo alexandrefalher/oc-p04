@@ -9,5 +9,5 @@ class Entity:
     def serialize(self) -> Dict:
         pass
 
-    def deserialize(self) -> Entity:
+    def deserialize(self, serialized_entity: Dict) -> Entity:
         pass
