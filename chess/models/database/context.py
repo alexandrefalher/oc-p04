@@ -7,10 +7,10 @@ from tinydb.storages import MemoryStorage
 class Context:
     def __init__(self, config: Config, in_memory_mode=False):
         self.__db_path = config.get_config("db_path")
-        self.__init_db(self.__db_path, in_memory_mode)
+        self.__init_db(in_memory_mode)
         self.__init_tables()
 
-    def __init_db(self, db_path: str, in_memory_mode: bool):
+    def __init_db(self, in_memory_mode: bool):
         if not in_memory_mode:
             self.__db = TinyDB(self.__db_path)
         else:
