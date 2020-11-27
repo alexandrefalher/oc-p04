@@ -13,3 +13,6 @@ class ViewModel:
             if choice.id == choice_id:
                 return choice.callback
         return None
+
+    def add_choice(self, choice: Choice) -> None:
+        self.choices.append(choice)

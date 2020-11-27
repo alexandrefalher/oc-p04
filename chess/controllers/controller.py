@@ -1,15 +1,19 @@
+from typing import Dict
+from chess.config import Config
+from chess.models.database.context import Context
 from chess.views.menu import Menu
 from chess.views.view_builder import ViewBuilder
 from chess.viewmodel.view_model import ViewModel
 
 
 class Controller:
-    def __init__(self):
+    def __init__(self, config: Config):
         self.__view_builder: ViewBuilder = ViewBuilder()
         self.__view_model: ViewModel = None
         self.__user_choice: str = None
+        self._context: Context = Context(config)
 
-    def navigate(self, view_model: ViewModel) -> None:
+    def navigate(self, view_model: ViewModel, data: Dict) -> None:
         self.__view_model = view_model
         while True:
             self.__render_view()
@@ -19,7 +23,7 @@ class Controller:
                 break
             else:
                 self.__view_model.error = "'{0}' is not a correct choice, please try again.".format(self.__user_choice)
-        callback()
+        callback(data)
 
     def __ask_user_choice(self) -> None:
         self.__user_choice = input(">>> ")

@@ -3,5 +3,5 @@ from .config import Config
 
 
 conf: Config = Config()
-main: MainController = MainController()
+main: MainController = MainController(conf)
 main.main_page()
