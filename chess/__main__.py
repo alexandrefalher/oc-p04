@@ -1,7 +1,16 @@
-from chess.controllers.mainController import MainController
-from .config import Config
+from lib.client.client import Client
+from lib.server.server import Server
+from lib.router.route import Route
+from lib.router.router import Router
+from lib.config.config import Config
 
 
-conf: Config = Config()
-main: MainController = MainController(conf)
-main.main_page()
+config: Config = Config("tournament/config.yaml")
+router: Router = Router([
+    Route(endpoint="/main/get", module="tournament.controller.main_controller", controller="MainController", method="get")
+])
+server: Server = Server(router)
+client: Client = Client(config, server)
+
+
+client.start()
