@@ -1,5 +1,5 @@
-from lib.data_model.data_model import DataModel
-from lib.partial_view.partial_view import PartialView
+from kview.data_model.data_model import DataModel
+from kview.partial_view.partial_view import PartialView
 
 
 class ListPartialView(PartialView):

@@ -1,7 +1,8 @@
 from typing import List
-from chess.models.database.context import Context
-from chess.models.entity_managers.entity_manager import EntityManager
-from chess.models.entities.player import Player
+
+from chess.model.database.context import Context
+from chess.model.entity_managers.entity_manager import EntityManager
+from chess.model.entities.player import Player
 
 
 class PlayerManager(EntityManager):

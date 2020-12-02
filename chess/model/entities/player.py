@@ -1,9 +1,9 @@
 from __future__ import annotations
 from typing import Dict
-from chess.models.entities.entity import Entity
 import time
 
-from chess.models.entities.gender import Gender
+from chess.model.entities.entity import Entity
+from chess.model.entities.gender import Gender
 
 
 class Player(Entity):

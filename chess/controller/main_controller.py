@@ -1,5 +1,5 @@
-from lib.response.response import Response
-from lib.data_model.data_model import DataModel
+from kview.response.response import Response
+from kview.data_model.data_model import DataModel
 
 
 class MainController:

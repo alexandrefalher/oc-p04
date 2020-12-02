@@ -1,7 +1,7 @@
 from lib.request.request import Request
-from lib.data_model.data_model import DataModel
-from lib.partial_view.partial_view import PartialView
-from lib.view.view import View
+from kview.data_model.data_model import DataModel
+from kview.partial_view.partial_view import PartialView
+from kview.view.view import View
 
 
 class Home(View):

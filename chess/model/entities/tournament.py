@@ -1,7 +1,8 @@
 from __future__ import annotations
 from typing import Dict, List
-from chess.models.entities.entity import Entity
 import time
+
+from chess.model.entities.entity import Entity
 
 
 class Tournament(Entity):

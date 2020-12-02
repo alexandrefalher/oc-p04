@@ -1,4 +1,4 @@
-from lib.partial_view.partial_view import PartialView
+from kview.partial_view.partial_view import PartialView
 
 
 class HeaderPartialView(PartialView):

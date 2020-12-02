@@ -1,8 +1,8 @@
-from lib.client.client import Client
-from lib.server.server import Server
-from lib.router.route import Route
-from lib.router.router import Router
-from lib.config.config import Config
+from kview.client.client import Client
+from kview.server.server import Server
+from kview.router.route import Route
+from kview.router.router import Router
+from kview.config.config import Config
 
 
 config: Config = Config("tournament/config.yaml")

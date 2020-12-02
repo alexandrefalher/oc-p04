@@ -1,10 +1,10 @@
 from typing import Dict, List
-
 from tinydb.queries import where
 from tinydb.table import Document
-from chess.models.entities.tournament import Tournament
-from chess.models.entity_managers.entity_manager import EntityManager
-from chess.models.database.context import Context
+
+from chess.model.entities.tournament import Tournament
+from chess.model.entity_managers.entity_manager import EntityManager
+from chess.model.database.context import Context
 
 
 class TournamentManager(EntityManager):

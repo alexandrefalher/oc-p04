@@ -1,7 +1,8 @@
 from tinydb.table import Table
-from chess.config import Config
 from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
+
+from kview.config.config import Config
 
 
 class Context:
