@@ -33,7 +33,7 @@ class Client:
         self.__view = view_class(self.__response.model)
 
     def _render_view(self) -> None:
-        self.__request = self.__view.render()
+        self.__request = self.__view.execute()
 
     def _import_view_module(self) -> Any:
         view_module_name: str = self._retrieve_view_module(self.__response.source_module)
