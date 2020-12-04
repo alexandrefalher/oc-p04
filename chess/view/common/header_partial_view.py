@@ -1,11 +1,4 @@
-from kview.partial_view.partial_view import PartialView
-
-
-class HeaderPartialView(PartialView):
-    def __init__(self):
-        pass
-
-    def generate(self) -> str:
-        return "-------------------------------------"\
-               "     Chess tournament manager        "\
-               "-------------------------------------"
+class HeaderPartialView:
+    @staticmethod
+    def generate() -> str:
+        return "----------- Gestionnaire de tournois d'échec -----------\n\n"

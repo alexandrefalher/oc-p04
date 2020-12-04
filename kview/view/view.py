@@ -6,19 +6,22 @@ from ..data_model.data_model import DataModel
 
 class View:
     def __init__(self, model: DataModel):
-        self._page_name: str = None
-        self._endpoint: str = None
+        self.__endpoint: str = None
         self.__model: DataModel = model
-        self.__page_content: str = None
         self.__source: str = self.__module__
+        self.__page_content: str = None
+
+    def generate(self, model: DataModel) -> str:
+        raise NotImplementedError()
+
+    def interact(self) -> str:
+        raise NotImplementedError()
 
     def execute(self) -> Request:
         self.__page_content = self.generate(self.__model)
         self._render()
-        return Request(self._endpoint, self.__source, self.__model)
-
-    def generate(self, model: DataModel) -> str:
-        raise NotImplementedError()
+        self.__endpoint = self.interact()
+        return Request(self.__endpoint, self.__source, self.__model)
 
     def _render(self) -> None:
         self._clear_console()
