@@ -18,10 +18,12 @@ class Client:
 
     def process(self) -> None:
         for process in Processor([self._send_request, self._create_view, self._render_view]):
+            if self.__request.endpoint == "/exit":
+                break
             process()
 
     def start(self) -> None:
-        self.__request = Request("/main/get", "", DataModel(None))
+        self.__request = Request("/", "", DataModel(None))
         self.process()
 
     def _send_request(self) -> None:

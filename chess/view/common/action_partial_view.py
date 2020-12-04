@@ -6,6 +6,6 @@ class ActionPartialView:
     def generate(choices: List[str]) -> str:
         view: str = ""
         for i, choice in enumerate(choices):
-            view += "{0} - {1} \n".format(i, choice)
+            view += "{0} - {1} \n".format(i + 1, choice)
         view += "\n"
         return view

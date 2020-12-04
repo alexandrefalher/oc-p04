@@ -7,7 +7,9 @@ from kview.config.config import Config
 
 config: Config = Config("chess/config.yaml")
 router: Router = Router([
-    Route(endpoint="/main/get", module="chess.controller.main_controller", controller="MainController", method="get")
+    Route(endpoint="/", module="chess.controller.main_controller", controller="MainController", method="menu"),
+    Route(endpoint="/tournament/menu", module="chess.controller.tournament_controller", controller="TournamentController", method="menu"),
+    Route(endpoint="/player/menu", module="chess.controller.player_controller", controller="PlayerController", method="menu")
 ])
 server: Server = Server(router)
 client: Client = Client(server)
