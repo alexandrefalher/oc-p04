@@ -1,4 +1,4 @@
-from chess.model.dto.dtos.player_dto import PlayerDto
+from chess.model.entities.player import Player
 from kview.request.request import Request
 from chess.validation.could_be_number_validator import CouldBeNumberValidator
 from chess.view.common.error_partial_view import ErrorPatialView
@@ -19,12 +19,12 @@ class List(View):
 
     def generate(self, model: DataModel) -> str:
         view: str = ""
-        dtos: List[PlayerDto] = model.get("entities")
-        if dtos is not None:
-            for dto in dtos:
-                bd_local = time.localtime(dto.birth_date)
+        players: List[Player] = model.get("entities")
+        if players is not None:
+            for player in players:
+                bd_local = time.localtime(player.birth_date)
                 birth_date = "{0}/{1}/{2}".format(bd_local.tm_mday, bd_local.tm_mon, bd_local.tm_year)
-                self.__actions.append("Voir le détail de: {0} {1} {2}".format(dto.firstname, dto.lastname, birth_date))
+                self.__actions.append("Voir le détail de: {0} {1} {2}".format(player.firstname, player.lastname, birth_date))
         self.__actions.append("Retour")
         view += HeaderPartialView.generate()
         view += TitlePartialView.generate("Liste des joueurs")
@@ -34,12 +34,12 @@ class List(View):
         return view
 
     def flow(self, user_input: Any, model: DataModel) -> Request:
-        dtos: List[PlayerDto] = model.get("entities")
+        players: List[Player] = model.get("entities")
         if not CouldBeNumberValidator.check(user_input):
             return None
         if int(user_input) >= 1 and int(user_input) <= len(self.__actions) - 1:
-            dto_id: int = dtos[int(user_input) - 1].id
-            return Request("/player/get", self.__module__, dto_id)
+            player_id: int = players[int(user_input) - 1].id
+            return Request("/player/get", self.__module__, player_id)
         elif user_input == str(len(self.__actions)):
             return Request("/player/menu", self.__module__, None)
         else:

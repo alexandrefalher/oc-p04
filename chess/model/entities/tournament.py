@@ -19,24 +19,25 @@ class Tournament(Entity):
         self.time_method: int = time_method
         self.description: str = description
 
-    def serialize(self) -> Dict:
+    @staticmethod
+    def serialize(tournament: Tournament) -> Dict:
         return {
-            "id": self.id,
-            "name": self.name,
-            "location": self.location,
-            "start_date_timestamp": self.start_date_timestamp,
-            "end_date_timesteamp": self.end_date_timestamp,
-            "over": self.over,
-            "round_count": self.round_count,
-            "rounds": "[]",
-            "players": "[]",
-            "time_method": self.time_method,
-            "description": self.description
+            "id": tournament.id,
+            "name": tournament.name,
+            "location": tournament.location,
+            "start_date_timestamp": tournament.start_date_timestamp,
+            "end_date_timesteamp": tournament.end_date_timestamp,
+            "over": tournament.over,
+            "round_count": tournament.round_count,
+            "rounds": [],
+            "players": [],
+            "time_method": tournament.time_method,
+            "description": tournament.description
         }
 
-    @classmethod
-    def deserialize(cls, serialized_entity: Dict):
-        return cls(
+    @staticmethod
+    def deserialize(serialized_entity: Dict) -> Tournament:
+        return Tournament(
             serialized_entity["id"],
             serialized_entity["name"],
             serialized_entity["location"],

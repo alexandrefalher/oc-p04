@@ -1,18 +1,18 @@
+from chess.model.entities.gender import Gender
+from chess.model.entities.player import Player
 import datetime
 import time
 from typing import List
-from chess.model.dto.dtos.player_dto import PlayerDto
-from chess.model.dto.dtos.gender_dto import GenderDto
 
 
 class Utils:
     @staticmethod
-    def find_gender_name(player_dto: PlayerDto, genders: List[GenderDto]) -> str:
-        if player_dto.gender_id == 0:
+    def find_gender_name(player_dto: Player, genders: List[Gender]) -> str:
+        if player_dto.gender == 0:
             return ""
         player_dto_gender_name: str = ""
         for gender in genders:
-            if gender.id == player_dto.gender_id:
+            if gender.id == player_dto.gender:
                 player_dto_gender_name = gender.name
         return player_dto_gender_name
 

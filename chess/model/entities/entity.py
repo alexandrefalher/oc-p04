@@ -6,8 +6,8 @@ class Entity:
     def __init__(self):
         pass
 
-    def serialize(self) -> Dict:
+    def serialize(entity: Entity) -> Dict:
         pass
 
-    def deserialize(self, serialized_entity: Dict) -> Entity:
+    def deserialize(serialized_entity: Dict) -> Entity:
         pass

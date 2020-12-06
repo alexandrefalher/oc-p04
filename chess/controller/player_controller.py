@@ -1,7 +1,4 @@
-from chess.model.dto.mappers.gender_mapper import GenderMapper
 from chess.model.entities.gender import Gender
-from chess.model.dto.dtos.player_dto import PlayerDto
-from chess.model.dto.mappers.player_mapper import PlayerMapper
 from chess.model.entity_managers.gender_manager import GenderManager
 from chess.model.database.context import Context
 from typing import List
@@ -17,8 +14,6 @@ class PlayerController(Controller):
         super(PlayerController, self).__init__(context)
         self.__player_manager: PlayerManager = PlayerManager(self._context)
         self.__gender_manager: GenderManager = GenderManager(self._context)
-        self.__player_mapper: PlayerMapper = PlayerMapper(self.__gender_manager)
-        self.__gender_mapper: GenderMapper = GenderMapper()
 
     def menu(self) -> Response:
         model: DataModel = DataModel(None)
@@ -26,38 +21,35 @@ class PlayerController(Controller):
 
     def get_all(self) -> Response:
         players: List[Player] = self.__player_manager.get_all()
-        dtos: List[PlayerDto] = [self.__player_mapper.to_dto(player) for player in players]
-        model = DataModel({"entities": dtos})
+        model = DataModel({"entities": players})
         return Response("list", self.__module__, self.__class__.__name__, model)
 
     def get(self, id: int) -> Response:
         player: Player = self.__player_manager.get(id)
         genders: List[Gender] = self.__gender_manager.get_all()
-        model = DataModel({"entity": self.__player_mapper.to_dto(player), "genders": [self.__gender_mapper.to_dto(gender) for gender in genders]})
+        model = DataModel({"entity": player, "genders": genders})
         return Response("details", self.__module__, self.__class__.__name__, model)
 
     def to_create(self) -> Response:
         genders: List[Gender] = self.__gender_manager.get_all()
-        model: DataModel = DataModel({"entity": PlayerDto(0, "", "", "", 0, 0), "genders": [self.__gender_mapper.to_dto(gender) for gender in genders]})
+        model: DataModel = DataModel({"entity": Player(0, "", "", "", 0, 0), "genders": genders})
         return Response("create", self.__module__, self.__class__.__name__, model)
 
-    def create(self, dto: PlayerDto) -> Response:
-        player: Player = self.__player_mapper.to_entity(dto)
+    def create(self, player: Player) -> Response:
         player_id: int = self.__player_manager.create(player)
-        dto.id = player_id
+        player.id = player_id
         genders: List[Gender] = self.__gender_manager.get_all()
-        model = DataModel({"entity": dto, "genders": [self.__gender_mapper.to_dto(gender) for gender in genders]})
+        model: DataModel = DataModel({"entity": player, "genders": genders})
         return Response("details", self.__module__, self.__class__.__name__, model)
 
     def to_update(self, id: int) -> Response:
         player: Player = self.__player_manager.get(id)
         genders: List[Gender] = self.__gender_manager.get_all()
-        model = DataModel({"entity": self.__player_mapper.to_dto(player), "genders": [self.__gender_mapper.to_dto(gender) for gender in genders]})
+        model: DataModel = DataModel({"entity": player, "genders": genders})
         return Response("update", self.__module__, self.__class__.__name__, model)
 
-    def update(self, dto: PlayerDto) -> Response:
-        player: Player = self.__player_mapper.to_entity(dto)
-        self.__player_manager.update(dto.id, player)
+    def update(self, player: Player) -> Response:
+        self.__player_manager.update(player.id, player)
         genders: List[Gender] = self.__gender_manager.get_all()
-        model = DataModel({"entity": dto, "genders": [self.__gender_mapper.to_dto(gender) for gender in genders]})
+        model: DataModel = DataModel({"entity": player, "genders": genders})
         return Response("details", self.__module__, self.__class__.__name__, model)
