@@ -2,7 +2,7 @@ from chess.view.common.error_partial_view import ErrorPatialView
 from chess.view.common.action_partial_view import ActionPartialView
 from chess.view.common.title_partial_view import TitlePartialView
 from chess.view.common.header_partial_view import HeaderPartialView
-from chess.view.common.input_partial_view import InputPartialView
+from chess.view.common.instruction_partial_view import InstructionPartialView
 from typing import Any, Union
 from kview.view.view import View
 from kview.data_model.data_model import DataModel
@@ -19,10 +19,10 @@ class Menu(View):
         view += TitlePartialView.generate("Gestion des tounois")
         view += ActionPartialView.generate(["Retour"])
         view += ErrorPatialView.generate(model)
-        view += InputPartialView.generate("Entrez le numéro correspondant à l'action que vous souhaitez effectuer (ex: '1' pour gérer les tournois)")
+        view += InstructionPartialView.generate("Entrez le numéro correspondant à l'action que vous souhaitez effectuer (ex: '1' pour gérer les tournois)")
         return view
 
-    def flow(self, user_input: Any) -> Union[str, None]:
+    def flow(self, user_input: Any, model: DataModel) -> Union[str, None]:
         if not IsOnlyOneCharValidator.check(user_input):
             return None
         if not CouldBeNumberValidator.check(user_input):

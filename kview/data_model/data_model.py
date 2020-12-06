@@ -5,11 +5,11 @@ class DataModel:
     def __init__(self, data: Dict[str, Any]):
         self.data: Dict[str, Any] = data if data is not None else {}
 
-    def get(self, key: str) -> str:
-        self.data.get(key)
+    def get(self, key: str) -> Any:
+        return self.data.get(key)
 
     def add(self, key: str, value: Any) -> bool:
-        if self._is_key_exists(key):
+        if not self._is_key_exists(key):
             self.data[key] = value
             return True
         return False
@@ -29,4 +29,5 @@ class DataModel:
             return True
 
     def _is_key_exists(self, key: str) -> bool:
-        return self.data.get(key) is not None
+        result = self.data.get(key)
+        return result is not None

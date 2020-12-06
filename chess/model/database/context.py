@@ -17,6 +17,10 @@ class Context:
         else:
             self.__db = TinyDB(storage=MemoryStorage)
 
+    def reset(self) -> None:
+        if self.__db is not None:
+            self.__db.drop_tables()
+
     def __init_tables(self):
         self.players: Table = self.__db.table("players")
         self.genders: Table = self.__db.table("genders")

@@ -1,8 +1,8 @@
-from ..data_model.data_model import DataModel
+from typing import Any
 
 
 class Request:
-    def __init__(self, endpoint: str, source: str, model: DataModel):
+    def __init__(self, endpoint: str, source: str, data: Any):
         self.endpoint: str = endpoint
         self.source: str = source
-        self.model: DataModel = model
+        self.data: Any = data

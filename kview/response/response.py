@@ -1,4 +1,4 @@
-from ..data_model.data_model import DataModel
+from kview.data_model.data_model import DataModel
 
 
 class Response:
