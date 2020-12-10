@@ -12,11 +12,18 @@ class TournamentManager(EntityManager):
         super(TournamentManager, self).__init__(context)
 
     def is_unfinished_tournament(self) -> bool:
-        unfinished: bool = self._context.tournaments.contains(where("over").test(lambda p0: p0 is False))
-        return unfinished
+        tournament: Tournament = self.get_unfinished()
+        return True if tournament is not None else False
+
+    def get_unfinished(self) -> Tournament:
+        doc: Document = self._context.tournaments.get(where("over").test(lambda p0: p0 is False))
+        if doc is None:
+            return None
+        tournament: Tournament = Tournament.deserialize(doc)
+        return tournament
 
     def get(self, id: int) -> Tournament:
-        document: Document = self._context.tournaments.get(None, id)
+        document = self._context.tournaments.get(doc_id=id)
         tournament: Tournament = Tournament.deserialize(document)
         return tournament
 
@@ -26,8 +33,8 @@ class TournamentManager(EntityManager):
         return tournaments
 
     def create(self, tournament: Tournament) -> int:
-        serialized_tournament: Dict = tournament.serialize()
-        id: int = self._context.tournaments.insert(serialized_tournament)
+        tournament_serialized: Dict = Tournament.serialize(tournament)
+        id: int = self._context.tournaments.insert(tournament_serialized)
         tournament.id = id
         self.update(id, tournament)
         return id

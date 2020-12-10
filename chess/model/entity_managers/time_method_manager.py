@@ -7,7 +7,7 @@ from chess.model.database.context import Context
 
 class TimeMethodManager(EntityManager):
     def __init__(self, context: Context):
-        super(TimeMethod, self).__init__(context)
+        super(TimeMethodManager, self).__init__(context)
 
     def get(self, id: int) -> TimeMethod:
         doc: Document = self._context.time_methods.get(doc_id=id)
@@ -26,7 +26,7 @@ class TimeMethodManager(EntityManager):
         return id
 
     def update(self, id: int, time_method: TimeMethod) -> int:
-        ids: List[int] = self._context.time_methods.update(TimeMethod.serialize(time_method), id)
+        ids: List[int] = self._context.time_methods.update(TimeMethod.serialize(time_method), doc_ids=[id])
         return ids
 
     def delete(self, id: int) -> int:

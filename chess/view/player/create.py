@@ -9,7 +9,7 @@ from chess.view.common.action_partial_view import ActionPartialView
 from chess.view.common.title_partial_view import TitlePartialView
 from chess.view.common.header_partial_view import HeaderPartialView
 from chess.view.common.instruction_partial_view import InstructionPartialView
-from typing import Any, List, Union
+from typing import Any, List
 from kview.view.view import View
 from kview.data_model.data_model import DataModel
 from chess.view.utils.utils import Utils
@@ -39,7 +39,7 @@ class Create(View):
         view += InstructionPartialView.generate(instruction)
         return view
 
-    def flow(self, user_input: Any, model: DataModel) -> Union[str, None]:
+    def flow(self, user_input: Any, model: DataModel) -> Request:
         player: Player = model.get("entity")
         if not NotNoneValidator.check(user_input):
             return None

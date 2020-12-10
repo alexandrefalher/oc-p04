@@ -6,12 +6,12 @@ from chess.model.entities.entity import Entity
 
 
 class Tournament(Entity):
-    def __init__(self, id: int, name: str, location: str, start_date_timestamp: time, end_date_timestamp: time, over: bool, round_count: int, rounds: List[int], players: List[int], time_method: int, description: str):
+    def __init__(self, id: int, name: str, location: str, start_date: time, end_date: time, over: bool, round_count: int, rounds: List[int], players: List[int], time_method: int, description: str):
         self.id: int = id
         self.name: str = name
         self.location: str = location
-        self.start_date_timestamp: time = start_date_timestamp
-        self.end_date_timestamp: time = end_date_timestamp
+        self.start_date: time = start_date
+        self.end_date: time = end_date
         self.over: bool = over
         self.round_count: int = round_count
         self.rounds: List[int] = rounds
@@ -25,12 +25,12 @@ class Tournament(Entity):
             "id": tournament.id,
             "name": tournament.name,
             "location": tournament.location,
-            "start_date_timestamp": tournament.start_date_timestamp,
-            "end_date_timesteamp": tournament.end_date_timestamp,
+            "start_date": tournament.start_date,
+            "end_date": tournament.end_date,
             "over": tournament.over,
             "round_count": tournament.round_count,
-            "rounds": [],
-            "players": [],
+            "rounds": tournament.rounds,
+            "players": tournament.players,
             "time_method": tournament.time_method,
             "description": tournament.description
         }
@@ -41,8 +41,8 @@ class Tournament(Entity):
             serialized_entity["id"],
             serialized_entity["name"],
             serialized_entity["location"],
-            serialized_entity["start_date_timestamp"],
-            serialized_entity["end_date_timestamp"],
+            serialized_entity["start_date"],
+            serialized_entity["end_date"],
             serialized_entity["over"],
             serialized_entity["round_count"],
             serialized_entity["rounds"],

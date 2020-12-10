@@ -1,12 +1,12 @@
 from __future__ import annotations
 from chess.model.entities.entity import Entity
-from typing import Dict, Tuple
+from typing import Any, Dict, List, Tuple
 
 
 class Match(Entity):
-    def __init__(self, id: int, results: Tuple[str, str]):
+    def __init__(self, id: int, results: Tuple[List[Any], List[Any]]):
         self.id: int = id
-        self.results: Tuple[str, str] = results
+        self.results: Tuple[List[Any], List[Any]] = results
 
     @staticmethod
     def serialize(entity: Match) -> Dict:

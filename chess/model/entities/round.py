@@ -5,11 +5,12 @@ from typing import Dict, List
 
 
 class Round(Entity):
-    def __ini__(self, id: int, matchs: List[int], start_date_timestamp: time, end_date_timestamp: time):
+    def __ini__(self, id: int, matchs: List[int], start_date_timestamp: time, end_date_timestamp: time, over: bool):
         self.id: int = id
         self.matchs: List[int] = matchs
         self.start_date_timestamp: time = start_date_timestamp
         self.end_date_timestamp: time = end_date_timestamp
+        self.over: bool = over
 
     @staticmethod
     def serialize(round: Round) -> Dict:
@@ -17,7 +18,8 @@ class Round(Entity):
             "id": round.id,
             "matchs": round.matchs,
             "start_date_timestamp": round.start_date_timestamp,
-            "end_date_timestamp": round.end_date_timestamp
+            "end_date_timestamp": round.end_date_timestamp,
+            "over": round.over
         }
 
     @staticmethod
@@ -26,5 +28,6 @@ class Round(Entity):
             id=serialized_entity["id"],
             matchs=serialized_entity["matchs"],
             start_date_timestamp=serialized_entity["start_date_timestamp"],
-            end_date_timestamp=serialized_entity["end_date_timestamp"]
+            end_date_timestamp=serialized_entity["end_date_timestamp"],
+            over=serialized_entity["over"]
         )
