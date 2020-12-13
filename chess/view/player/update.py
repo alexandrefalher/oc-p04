@@ -12,7 +12,7 @@ from chess.view.common.instruction_partial_view import InstructionPartialView
 from typing import Any, List, Union
 from kview.view.view import View
 from kview.data_model.data_model import DataModel
-from chess.view.utils.utils import Utils
+from chess.utils.utils import Utils
 
 
 class Update(View):
@@ -27,7 +27,7 @@ class Update(View):
         view += TitlePartialView.generate("Modifier le joueur")
         view += "{0}: {1}\n".format("Prénom", player.firstname)
         view += "{0}: {1}\n".format("Nom", player.lastname)
-        view += "{0}: {1}\n".format("Date de naissance", Utils.date_time_to_str(player.birth_date))
+        view += "{0}: {1}\n".format("Date de naissance", Utils.date_to_date_str(player.birth_date))
         view += "{0}: {1}\n".format("Sexe", Utils.find_gender_name(player, genders))
         view += "{0}: {1}\n".format("Classement", player.ranking)
         view += "\n"
@@ -57,7 +57,7 @@ class Update(View):
             return None
         elif user_input == "3":
             birth_date: str = input("Nouvelle date de naissance (format JJ/MM/AAAA) >>> ")
-            player.birth_date = Utils.date_str_to_time(birth_date)
+            player.birth_date = Utils.date_str_to_date(birth_date)
             return None
         elif user_input == "4":
             gender_id_str = input("Nouveau sexe (1 pour Homme, 2 pour Femme) >>> ")

@@ -27,7 +27,7 @@ class RoundManager(EntityManager):
         return id
 
     def update(self, id: int, round: Round) -> int:
-        ids: List[int] = self._context.rounds.update(Round.serialize(round), id)
+        ids: List[int] = self._context.rounds.update(Round.serialize(round), doc_ids=[id])
         return ids
 
     def delete(self, id: int) -> int:

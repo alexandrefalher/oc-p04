@@ -12,7 +12,7 @@ from chess.view.common.instruction_partial_view import InstructionPartialView
 from typing import Any, List
 from kview.view.view import View
 from kview.data_model.data_model import DataModel
-from chess.view.utils.utils import Utils
+from chess.utils.utils import Utils
 from chess.model.entities.player import Player
 
 
@@ -29,8 +29,8 @@ class Update(View):
         view += TitlePartialView.generate("Modification de tournois")
         view += "{0}: {1}\n".format("Nom", self.__tournament.name)
         view += "{0}: {1}\n".format("Lieu", self.__tournament.location)
-        view += "{0}: {1}\n".format("Date de début", Utils.date_time_to_str(self.__tournament.start_date))
-        view += "{0}: {1}\n".format("Date de fin", Utils.date_time_to_str(self.__tournament.end_date))
+        view += "{0}: {1}\n".format("Date de début", Utils.date_to_date_str(self.__tournament.start_date))
+        view += "{0}: {1}\n".format("Date de fin", Utils.date_to_date_str(self.__tournament.end_date))
         view += "{0}: {1}\n".format("Description", self.__tournament.description)
         time_method: TimeMethod = Utils.find(self.__time_methods, lambda tm: tm.id == self.__tournament.time_method)
         if time_method is not None:
@@ -51,16 +51,12 @@ class Update(View):
             "Modifier la description",
             "Modifier la gestion du temps",
             "Modifier les joueurs",
-            "Commencer le tournois",
-            "Enregistrer",
-            "Terminer nok",
+            "Modifier les rondes",
+            "Terminer",
             "Retour"
         ])
         view += ErrorPatialView.generate(model)
-        instruction: str = model.get("instruction")
-        if instruction is None:
-            instruction = "Entrez le nom du tournois"
-        view += InstructionPartialView.generate(instruction)
+        view += InstructionPartialView.generate("Entrez le numéro correspondant à l'action que vous souhaitez effectuer")
         return view
 
     def flow(self, user_input: Any, model: DataModel) -> Request:
@@ -71,29 +67,26 @@ class Update(View):
         if not CouldBeNumberValidator.check(user_input):
             return None
         if user_input == "1":
-            self.__tournament.name = input("Nouveau nom >>>")
-            model.update("entity", self.__tournament)
-            return None
+            self.__tournament.name = input("Nouveau nom >>> ")
+            return Request("/tournament/update", self.__module__, self.__tournament)
         elif user_input == "2":
-            self.__tournament.location = input("Nouveau le lieu >>>")
-            model.update("entity", self.__tournament)
-            return None
+            self.__tournament.location = input("Nouveau le lieu >>> ")
+            return Request("/tournament/update", self.__module__, self.__tournament)
         elif user_input == "3":
-            self.__tournament.description = input("Nouvelle description >>>")
-            model.update("entity", self.__tournament)
-            return None
+            self.__tournament.description = input("Nouvelle description >>> ")
+            return Request("/tournament/update", self.__module__, self.__tournament)
         elif user_input == "4":
             return Request("/tournament/choosetimemethod", self.__module__, self.__tournament.id)
         elif user_input == "5":
             return Request("/tournament/chooseplayer", self.__module__, self.__tournament.id)
         elif user_input == "6":
-            # commencer tournois
-            return None
+            if Utils.contains(self.__tournament.players, lambda p: p == 0):
+                model.add("errors", ["Vous devez assigner 8 joueurs"])
+                return None
+            return Request("/tournament/chooseround", self.__module__, self.__tournament.id)
         elif user_input == "7":
-            return Request("/tournament/update", self.__module__, self.__tournament)
-        elif user_input == "8":
             return Request("/tournament/terminate", self.__module__, self.__tournament.id)
-        elif user_input == "9":
+        elif user_input == "8":
             return Request("/tournament/menu", self.__module__, None)
         else:
             return None

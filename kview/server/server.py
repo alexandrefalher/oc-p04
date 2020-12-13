@@ -4,7 +4,6 @@ import importlib
 from typing import Any
 import inspect
 
-from ..data_model.data_model import DataModel
 from ..router.route import Route
 from ..router.router import Router
 from ..request.request import Request

@@ -12,26 +12,28 @@ from typing import Any, List
 from kview.view.view import View
 from kview.data_model.data_model import DataModel
 from chess.utils.utils import Utils
-from chess.model.entities.player import Player
+from chess.model.entities.round import Round
 
 
-class Chooseplayer(View):
+class Chooseround(View):
     def __init__(self, model: DataModel):
-        super(Chooseplayer, self).__init__(model)
-        self.__tournament: Tournament = model.get("entity")
-        self.__players: List[Player] = model.get("players")
+        super(Chooseround, self).__init__(model)
+        self.__tournament: Tournament = model.get("tournament")
+        self.__rounds: List[Round] = model.get("rounds")
 
     def generate(self, model: DataModel) -> str:
         actions: List[str] = []
         view: str = ""
         view += HeaderPartialView.generate()
         view += TitlePartialView.generate("Création de tournois - assignation des joueurs")
-        for i, player_id in enumerate(self.__tournament.players):
-            if player_id != 0:
-                player: Player = Utils.find(self.__players, lambda player: player.id == player_id)
-                actions.append("Joueur {0} {1} {2} - {3}\n".format(player.firstname, player.lastname, player.birth_date, player.ranking))
+        round_count: int = 0
+        while round_count < self.__tournament.round_count:
+            if self.__tournament.rounds[round_count] != 0:
+                round: Round = Utils.find(self.__rounds, lambda round: round.id == self.__tournament.rounds[round_count])
+                actions.append("{0}: {1} - {2} > {3}\n".format(round.name, Utils.date_to_datetime_str(round.start_date_timestamp), Utils.date_to_datetime_str(round.end_date_timestamp), round.over))
             else:
-                actions.append("Joueur Non assigné\n")
+                actions.append("Ronde non jouée\n")
+            round_count += 1
         view += "\n"
         actions.append("Retour")
         view += ActionPartialView.generate(actions)
@@ -46,9 +48,12 @@ class Chooseplayer(View):
             return None
         if not CouldBeNumberValidator.check(user_input):
             return None
-        if 1 <= int(user_input) and int(user_input) <= 8:
-            return Request("/tournament/searchplayer", self.__module__, {"tournament_id": self.__tournament.id, "tournament_player_index": int(user_input) - 1})
-        elif user_input == "9":
+        if 1 <= int(user_input) and int(user_input) <= self.__tournament.round_count:
+            if self.__tournament.rounds[int(user_input) - 1] == 0:
+                return Request("/round/create", self.__module__, {"tournament_id": self.__tournament.id, "tournament_round_index": int(user_input) - 1})
+            else:
+                return Request("/round/toupdate", self.__module__, {"round_id": self.__tournament.rounds[int(user_input) - 1], "tournament_id": self.__tournament.id})
+        elif int(user_input) > self.__tournament.round_count:
             return Request("/tournament/update", self.__module__, self.__tournament)
         else:
             return None

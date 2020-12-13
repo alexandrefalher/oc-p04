@@ -1,3 +1,4 @@
+from chess.model.entities.round import Round
 from chess.model.entities.player import Player
 from chess.model.entities.time_method import TimeMethod
 import time
@@ -10,6 +11,7 @@ from kview.response.response import Response
 from chess.model.entity_managers.tournament_manager import TournamentManager
 from chess.model.entity_managers.time_method_manager import TimeMethodManager
 from chess.model.entity_managers.player_manager import PlayerManager
+from chess.model.entity_managers.round_manager import RoundManager
 
 
 class TournamentController(Controller):
@@ -18,21 +20,29 @@ class TournamentController(Controller):
         self.__tournament_manager: TournamentManager = TournamentManager(context)
         self.__time_method_manager: TimeMethodManager = TimeMethodManager(context)
         self.__player_manager: PlayerManager = PlayerManager(context)
+        self.__round_manager: RoundManager = RoundManager(context)
 
     def menu(self) -> Response:
         is_unfinished_tournament: bool = self.__tournament_manager.is_unfinished_tournament()
         model: DataModel = DataModel({"unfinished": is_unfinished_tournament})
         return Response("Menu", self.__module__, self.__class__.__name__, model)
 
+    def get(self, tournament_id: int) -> Response:
+        tournament: Tournament = self.__tournament_manager.get(tournament_id)
+        players: List[Player] = self.__player_manager.get_all()
+        time_methods: List[TimeMethod] = self.__time_method_manager.get_all()
+        model: DataModel = DataModel({"entity": tournament, "players": players, "time_methods": time_methods})
+        return Response("Update", self.__module__, self.__class__.__name__, model)
+
     def create(self) -> Response:
         if self.__tournament_manager.is_unfinished_tournament():
             return Response("Menu", self.__module__, self.__class__.__name__, DataModel({"errors": "Un tournois est déjà commencé"}))
-        tournament: Tournament = Tournament(0, "", "", time.mktime(time.localtime()), 0, False, 4, [], [0, 0, 0, 0, 0, 0, 0, 0], 0, "")
+        tournament: Tournament = Tournament(0, "", "", time.mktime(time.localtime()), 0, False, 4, [0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], 0, "")
         id: int = self.__tournament_manager.create(tournament)
         tournament.id = id
         players: List[Player] = self.__player_manager.get_all()
         time_methods: List[TimeMethod] = self.__time_method_manager.get_all()
-        model: DataModel = DataModel({"entity": tournament, "players": players, "time_methods": time_methods})
+        model: DataModel = DataModel({"entity": tournament, "players": players, "time_methods": time_methods, "tournament_id": tournament.id})
         return Response("Update", self.__module__, self.__class__.__name__, model)
 
     def update(self, tournament: Tournament) -> Response:
@@ -67,3 +77,9 @@ class TournamentController(Controller):
         time_methods: List[TimeMethod] = self.__time_method_manager.get_all()
         model: DataModel = DataModel({"tournament": tournament, "time_methods": time_methods})
         return Response("choosetimemethod", self.__module__, self.__class__.__name__, model)
+
+    def chooseround(self, tournament_id: int) -> Response:
+        tournament: Tournament = self.__tournament_manager.get(tournament_id)
+        rounds: List[Round] = self.__round_manager.get_all()
+        model: DataModel = DataModel({"tournament": tournament, "rounds": rounds})
+        return Response("chooseround", self.__module__, self.__class__.__name__, model)

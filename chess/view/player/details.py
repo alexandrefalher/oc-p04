@@ -1,6 +1,6 @@
 from chess.model.entities.gender import Gender
 from chess.model.entities.player import Player
-from chess.view.utils.utils import Utils
+from chess.utils.utils import Utils
 from kview.request.request import Request
 from chess.validation.could_be_number_validator import CouldBeNumberValidator
 from chess.validation.is_only_one_char_validator import IsOnlyOneCharValidator
@@ -26,7 +26,7 @@ class Details(View):
         view += TitlePartialView.generate("Détails du joueurs")
         view += "{0}: {1}\n".format("Prénom", player.firstname)
         view += "{0}: {1}\n".format("Nom", player.lastname)
-        view += "{0}: {1}\n".format("Date de naissence", Utils.date_time_to_str(player.birth_date))
+        view += "{0}: {1}\n".format("Date de naissence", Utils.date_to_date_str(player.birth_date))
         view += "{0}: {1}\n".format("Sexe", Utils.find_gender_name(player, genders))
         view += "{0}: {1}\n".format("Classement", player.ranking)
         view += "\n"
