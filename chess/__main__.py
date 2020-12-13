@@ -1,7 +1,6 @@
 from chess.model.entities.time_method import TimeMethod
 from chess.model.entity_managers.time_method_manager import TimeMethodManager
 from chess.model.entity_managers.tournament_manager import TournamentManager
-from chess.model.entities.tournament import Tournament
 from chess.model.entities.gender import Gender
 from chess.model.entity_managers.gender_manager import GenderManager
 import time
@@ -19,7 +18,7 @@ config: Config = Config("chess/config.yaml")
 context: Context = Context(config)
 
 # SEEDER FOR EXAMPLE
-#context.reset()
+context.reset()
 gender_manager: GenderManager = GenderManager(context)
 player_manager: PlayerManager = PlayerManager(context)
 time_method_manager: TimeMethodManager = TimeMethodManager(context)
@@ -38,7 +37,6 @@ if len(context.genders.all()) == 0:
     time_method_manager.create(TimeMethod(0, "Bullet"))
     time_method_manager.create(TimeMethod(0, "Blitz"))
     time_method_manager.create(TimeMethod(0, "Coup rapide"))
-    #tournament_manager.create(Tournament(0, "Tournois 1", "Rennes", time.mktime(time.localtime()), time.mktime(time.localtime()), True, 4, [], [], 1, "Description vide"))
 
 # -----------------
 
