@@ -3,6 +3,7 @@ from typing import Any
 
 from ..request.request import Request
 from ..data_model.data_model import DataModel
+from ..utils.console import Console
 
 
 class View:
@@ -27,11 +28,5 @@ class View:
         return request
 
     def _render(self) -> None:
-        self._clear_console()
+        Console.clear_console()
         print(self.__page_content)
-
-    def _clear_console(self) -> None:
-        if name == "posix":
-            system("clear")
-        else:
-            system("cls")

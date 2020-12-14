@@ -1,4 +1,5 @@
 import importlib
+from kview.utils.console import Console
 from typing import Any, List, Tuple
 
 from ..data_model.data_model import DataModel
@@ -19,6 +20,7 @@ class Client:
     def process(self) -> None:
         for process in Processor([self._send_request, self._create_view, self._render_view]):
             if self.__request.endpoint == "/exit":
+                Console.clear_console()
                 break
             process()
 

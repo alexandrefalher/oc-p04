@@ -11,16 +11,16 @@ from kview.data_model.data_model import DataModel
 from kview.view.view import View
 
 
-class Home(View):
+class Menu(View):
     def __init__(self, model: DataModel):
-        super(Home, self).__init__(model)
+        super(Menu, self).__init__(model)
 
     def generate(self, model: DataModel) -> str:
         view: str = HeaderPartialView.generate()
         view += TitlePartialView.generate("Home")
-        view += ActionPartialView.generate(["Gestion des tournois", "Gestion des joueurs", "Rapports", "Quitter"])
+        view += ActionPartialView.generate(["Joueurs par ordre alphabétique", "Joueurs par classement", "Retour"])
         view += ErrorPatialView.generate(model)
-        view += InstructionPartialView.generate("Entrez le numéro correspondant à l'action que vous souhaitez effectuer (ex: '1' pour gérer les tournois)")
+        view += InstructionPartialView.generate("Entrez le numéro correspondant à l'action que vous souhaitez effectuer")
         return view
 
     def flow(self, user_input: Any, model: DataModel) -> Request:
@@ -29,12 +29,10 @@ class Home(View):
         if not CouldBeNumberValidator.check(user_input):
             return None
         if user_input == "1":
-            return Request("/tournament/menu", self.__module__, None)
-        elif user_input == "2":
-            return Request("/player/menu", self.__module__, None)
+            return Request("/report/playersalpha", self.__module__, None)
+        if user_input == "2":
+            return Request("/report/playersrank", self.__module__, None)
         elif user_input == "3":
-            return Request("/report/menu", self.__module__, None)
-        elif user_input == "4":
-            return Request("/exit", self.__module__, None)
+            return Request("/", self.__module__, None)
         else:
             return None

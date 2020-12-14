@@ -34,6 +34,11 @@ class TournamentController(Controller):
         model: DataModel = DataModel({"entity": tournament, "players": players, "time_methods": time_methods})
         return Response("Update", self.__module__, self.__class__.__name__, model)
 
+    def get_all(self) -> Response:
+        tournaments: List[Tournament] = self.__tournament_manager.get_all()
+        model: DataModel = DataModel({"tournaments": tournaments})
+        return Response("List", self.__module__, self.__class__.__name__, model)
+
     def create(self) -> Response:
         if self.__tournament_manager.is_unfinished_tournament():
             return Response("Menu", self.__module__, self.__class__.__name__, DataModel({"errors": "Un tournois est déjà commencé"}))

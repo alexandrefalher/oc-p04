@@ -18,7 +18,7 @@ config: Config = Config("chess/config.yaml")
 context: Context = Context(config)
 
 # SEEDER FOR EXAMPLE
-context.reset()
+#context.reset()
 gender_manager: GenderManager = GenderManager(context)
 player_manager: PlayerManager = PlayerManager(context)
 time_method_manager: TimeMethodManager = TimeMethodManager(context)
@@ -42,6 +42,9 @@ if len(context.genders.all()) == 0:
 
 router: Router = Router([
     Route(endpoint="/", module="chess.controller.main_controller", controller="MainController", method="menu"),
+    Route(endpoint="/report/menu", module="chess.controller.report_controller", controller="ReportController", method="menu"),
+    Route(endpoint="/report/playersalpha", module="chess.controller.report_controller", controller="ReportController", method="get_players_by_alphabet"),
+    Route(endpoint="/report/playersrank", module="chess.controller.report_controller", controller="ReportController", method="get_players_by_rank"),
     Route(endpoint="/tournament/menu", module="chess.controller.tournament_controller", controller="TournamentController", method="menu"),
     Route(endpoint="/tournament/details", module="chess.controller.tournament_controller", controller="TournamentController", method="get"),
     Route(endpoint="/tournament/list", module="chess.controller.tournament_controller", controller="TournamentController", method="get_all"),

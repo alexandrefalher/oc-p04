@@ -1,9 +1,11 @@
-from typing import List
+from typing import Any, Callable, List, TypeVar
 
 from tinydb.table import Document
 from chess.model.database.context import Context
 from chess.model.entity_managers.entity_manager import EntityManager
 from chess.model.entities.player import Player
+
+T = TypeVar('T')
 
 
 class PlayerManager(EntityManager):
@@ -18,6 +20,11 @@ class PlayerManager(EntityManager):
     def get_all(self) -> List[Player]:
         documents: List[Player] = self._context.players.all()
         players: List[Document] = [Player.deserialize(doc) for doc in documents]
+        return players
+
+    def get_sorted(self, sort_method: Callable[[Player], Any]) -> List[Player]:
+        players: List[Player] = self.get_all()
+        players.sort(key=sort_method)
         return players
 
     def create(self, player: Player) -> int:
