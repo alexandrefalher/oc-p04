@@ -15,6 +15,8 @@ class Players(View):
     def __init__(self, model: DataModel):
         super(Players, self).__init__(model)
         self.__players: List[Player] = model.get("players")
+        self.__endpoint: str = model.get("endpoint") if model.get("endpoint") is not None else "/report/menu"
+        self.__data: Any = model.get("data") if model.get("data") is not None else None
 
     def generate(self, model: DataModel) -> str:
         view: str = ""
@@ -32,6 +34,6 @@ class Players(View):
 
     def flow(self, user_input: Any, model: DataModel) -> Request:
         if user_input == "1":
-            return Request("/report/menu", self.__module__, None)
+            return Request(self.__endpoint, self.__module__, self.__data)
         else:
             return None

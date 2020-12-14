@@ -16,43 +16,35 @@ from chess.utils.utils import Utils
 from chess.model.entities.player import Player
 
 
-class Update(View):
+class Tournamentdetails(View):
     def __init__(self, model: DataModel):
-        super(Update, self).__init__(model)
-        self.__tournament: Tournament = model.get("entity")
+        super(Tournamentdetails, self).__init__(model)
+        self.__tournament: Tournament = model.get("tournament")
         self.__players: List[Player] = model.get("players")
         self.__time_methods: List[TimeMethod] = model.get("time_methods")
 
     def generate(self, model: DataModel) -> str:
         view: str = ""
         view += HeaderPartialView.generate()
-        view += TitlePartialView.generate("Modification de tournois")
+        view += TitlePartialView.generate("Détails du tournois")
         view += "{0}: {1}\n".format("Nom", self.__tournament.name)
         view += "{0}: {1}\n".format("Lieu", self.__tournament.location)
         view += "{0}: {1}\n".format("Date de début", Utils.date_to_date_str(self.__tournament.start_date))
         view += "{0}: {1}\n".format("Date de fin", Utils.date_to_date_str(self.__tournament.end_date))
         view += "{0}: {1}\n".format("Description", self.__tournament.description)
         time_method: TimeMethod = Utils.find(self.__time_methods, lambda tm: tm.id == self.__tournament.time_method)
-        if time_method is not None:
-            view += "{0}: {1}\n".format("Gestion du temps", time_method.name)
-        else:
-            view += "{0}: aucune assignée\n".format("Gestion du temps")
-        view += "{0}:\n".format("Joueurs")
+        view += "{0}: {1}\n".format("Gestion du temps", time_method.name)
         for player_id in self.__tournament.players:
             player: Player = Utils.find(self.__players, lambda player: player.id == player_id)
-            if player is not None:
-                view += "         {0} {1}, classement: {2}\n".format(player.firstname, player.lastname, player.ranking)
+            view += "         {0} {1}, classement: {2}\n".format(player.firstname, player.lastname, player.ranking)
         view += "{0}: {1}\n".format("Nombre de rondes", self.__tournament.round_count)
         view += "{0}: {1}\n".format("Terminé", self.__tournament.over)
         view += "\n"
         view += ActionPartialView.generate([
-            "Modifier le nom",
-            "Modifier le lieu",
-            "Modifier la description",
-            "Modifier la gestion du temps",
-            "Modifier les joueurs",
-            "Modifier les rondes",
-            "Terminer",
+            "Lister les joueurs par ordre alphabétique",
+            "Lister les joueurs par classement",
+            "Lister les rondes",
+            "Lister les tours",
             "Retour"
         ])
         view += ErrorPatialView.generate(model)
@@ -67,27 +59,14 @@ class Update(View):
         if not CouldBeNumberValidator.check(user_input):
             return None
         if user_input == "1":
-            self.__tournament.name = input("Nouveau nom >>> ")
-            return Request("/tournament/update", self.__module__, self.__tournament)
+            return Request("/report/tournamentplayersalpha", self.__module__, self.__tournament.id)
         elif user_input == "2":
-            self.__tournament.location = input("Nouveau le lieu >>> ")
-            return Request("/tournament/update", self.__module__, self.__tournament)
+            return Request("/report/tournamentplayersrank", self.__module__, self.__tournament.id)
         elif user_input == "3":
-            self.__tournament.description = input("Nouvelle description >>> ")
-            return Request("/tournament/update", self.__module__, self.__tournament)
+            return Request("/report/tournamentrounds", self.__module__, self.__tournament.id)
         elif user_input == "4":
-            return Request("/tournament/choosetimemethod", self.__module__, self.__tournament.id)
+            return Request("/report/tournamentmatchs", self.__module__, self.__tournament.id)
         elif user_input == "5":
-            return Request("/tournament/chooseplayer", self.__module__, self.__tournament.id)
-        elif user_input == "6":
-            if Utils.contains(self.__tournament.players, lambda p: p == 0):
-                model.add("errors", ["Vous devez assigner 8 joueurs"])
-                return None
-            return Request("/tournament/chooseround", self.__module__, self.__tournament.id)
-        elif user_input == "7":
-            self.__tournament.over = True
-            return Request("/tournament/update", self.__module__, self.__tournament)
-        elif user_input == "8":
-            return Request("/tournament/menu", self.__module__, None)
+            return Request("/report/tournamentlist", self.__module__, None)
         else:
             return None

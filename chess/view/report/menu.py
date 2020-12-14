@@ -18,7 +18,11 @@ class Menu(View):
     def generate(self, model: DataModel) -> str:
         view: str = HeaderPartialView.generate()
         view += TitlePartialView.generate("Home")
-        view += ActionPartialView.generate(["Joueurs par ordre alphabétique", "Joueurs par classement", "Retour"])
+        view += ActionPartialView.generate([
+            "Joueurs par ordre alphabétique",
+            "Joueurs par classement",
+            "Tournois",
+            "Retour"])
         view += ErrorPatialView.generate(model)
         view += InstructionPartialView.generate("Entrez le numéro correspondant à l'action que vous souhaitez effectuer")
         return view
@@ -32,7 +36,9 @@ class Menu(View):
             return Request("/report/playersalpha", self.__module__, None)
         if user_input == "2":
             return Request("/report/playersrank", self.__module__, None)
-        elif user_input == "3":
+        if user_input == "3":
+            return Request("/report/tournamentlist", self.__module__, None)
+        elif user_input == "4":
             return Request("/", self.__module__, None)
         else:
             return None

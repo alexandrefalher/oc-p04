@@ -32,6 +32,14 @@ class TournamentManager(EntityManager):
         tournaments: List[Tournament] = [Tournament.deserialize(document) for document in documents]
         return tournaments
 
+    def get_all_finished(self) -> List[Tournament]:
+        documents: List[Document] = self._context.tournaments.all()
+        tournaments: List[Tournament] = [Tournament.deserialize(document) for document in documents]
+        for tournament in tournaments:
+            if not tournament.over:
+                tournaments.remove(tournament)
+        return tournaments
+
     def create(self, tournament: Tournament) -> int:
         tournament_serialized: Dict = Tournament.serialize(tournament)
         id: int = self._context.tournaments.insert(tournament_serialized)

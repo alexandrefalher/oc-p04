@@ -28,6 +28,15 @@ class MatchManager(EntityManager):
         matchs: List[Match] = [self.get(match_id) for match_id in round.matchs]
         return matchs
 
+    def get_all_from_tournament(self, tournament_id: int) -> List[Match]:
+        rounds: List[Round] = self.__round_manager.get_all_from_tournament(tournament_id)
+        matchs: List[Match] = []
+        for round in rounds:
+            intermediate_matchs: List[Match] = self.get_all_from_round(round.id)
+            for imatch in intermediate_matchs:
+                matchs.append(imatch)
+        return matchs
+
     def create(self, match: Match) -> int:
         id: int = self._context.matchs.insert(Match.serialize(match))
         match.id = id
